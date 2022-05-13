@@ -11,6 +11,11 @@ HDR = dhry.h
 
 override CFLAGS += $(DHRY-CFLAGS) $(XCFLAGS) -Xlinker --defsym=__stack_size=0x800 -Xlinker --defsym=__heap_size=0x1000
 all: dhrystone-o2 dhrystone-o3 dhrystone-o2-lto dhrystone-o2-noinline
+dasm: dhrystone-o2 dhrystone-o3 dhrystone-o2-lto dhrystone-o2-noinline
+	$(OBJDUMP) -dj .text dhrystone-o2 > dhrystone-o2.d
+	$(OBJDUMP) -dj .text dhrystone-o3 > dhrystone-o3.d
+	$(OBJDUMP) -dj .text dhrystone-o2-lto > dhrystone-o2-lto.d
+	$(OBJDUMP) -dj .text dhrystone-o2-noinline > dhrystone-o2-noinline.d
 dhrystone-o2: $(SRC) $(HDR)
 	$(CC) $(CFLAGS) -O2 $(SRC) $(LDFLAGS) $(LOADLIBES) $(LDLIBS) -o $@
 dhrystone-o3: $(SRC) $(HDR)
